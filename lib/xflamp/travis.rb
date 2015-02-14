@@ -4,14 +4,14 @@ require 'xflamp/aggregated_green'
 module XFLamp
   module TravisCI
     class Project
-      attr_reader :repo
+      attr_reader :repo_slug
 
       def initialize(repo_slug)
-        @repo = Travis::Repository.find repo_slug
+        @repo_slug = repo_slug
       end
 
       def green?
-        @repo.last_build.green?
+        Travis::Repository.find(repo_slug).last_build.green?
       end
     end
 

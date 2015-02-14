@@ -1,4 +1,5 @@
 require 'xflamp/build_servers'
+require 'xflamp/lamp'
 
 module XFLamp
   module_function

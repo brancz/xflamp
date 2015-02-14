@@ -7,10 +7,17 @@ module XFLamp
     servers = BuildServers.new
     lamp = Lamp.new
     loop do
-      lamp.on! unless servers.green?
+      green = servers.green?
+      if green
+        puts 'All watched builds are well!'
+        lamp.off!
+      else
+        puts 'There is at least one build that is not passing...'
+        lamp.on!
+      end
       sleep 10
     end
-  rescue
+  rescue Interrupt
     puts 'Exiting...'
   end
 end

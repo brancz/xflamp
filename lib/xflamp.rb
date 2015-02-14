@@ -3,7 +3,7 @@ require 'xflamp/build_servers'
 module XFLamp
   module_function
 
-  def main
+  def run
     servers = BuildServers.new
     lamp = Lamp.new
     loop do

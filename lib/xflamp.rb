@@ -4,7 +4,7 @@ require 'xflamp/lamp'
 module XFLamp
   module_function
 
-  def run
+  def run(options = {})
     servers = BuildServers.new
     lamp = Lamp.new
     loop do
@@ -18,6 +18,8 @@ module XFLamp
       end
       sleep 10
     end
+  rescue Config::ConfigMissing
+    puts 'The config you intend to use does not exists. By default XFLamp uses the file xflamp.yml in the current directory.'
   rescue Interrupt
     puts 'Exiting...'
   end

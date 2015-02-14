@@ -11,7 +11,10 @@ module XFLamp
       end
 
       def green?
-        Travis::Repository.find(repo_slug).last_build.green?
+        repo = Travis::Repository.find(repo_slug)
+        green = repo.last_build.green?
+        repo.caches.each(&:delete)
+        green
       end
     end
 

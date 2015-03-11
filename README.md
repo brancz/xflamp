@@ -14,6 +14,17 @@ current direcory, then you can start the program with
 
 	$ xflamp
 
+Example config file (by default called `xflamp.yml` in the current directory)
+
+```yaml
+---
+servers:
+  travis-ci-org:
+    projects:
+      - flower-pot/xflamp
+
+```
+
 If you want to use another `PIN` or want to specify the config file yourself,
 the CLI has some documentation on how to achieve that
 

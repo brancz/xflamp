@@ -1,31 +1,19 @@
 require 'yaml'
 
 module XFLamp
-  module Config
+  class Config
     class ConfigMissing < StandardError; end
 
-    module_function
+    attr_reader :config
 
-    def servers
-      YAML.load_file(config_path)['servers']
+    def initialize(config_path)
+      @config = YAML.load_file(config_path)
     rescue
       raise ConfigMissing
     end
 
-    def config_path=(path)
-      @path = path
-    end
-
-    def config_path
-      @path ||= 'xflamp.yml'
-    end
-
-    def pin=(pin)
-      @pin = pin
-    end
-
-    def pin
-      @pin ||= 0
+    def servers
+      config['servers']
     end
   end
 end

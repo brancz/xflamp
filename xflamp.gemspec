@@ -12,5 +12,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency 'bundler'
   s.add_runtime_dependency 'travis'
   s.add_runtime_dependency 'wiringpi'
+  s.add_runtime_dependency 'inquirer'
 end
 

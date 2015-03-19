@@ -1,5 +1,6 @@
 require 'travis/client/session'
 require 'xflamp/aggregated_green'
+require 'xflamp/build_servers'
 
 module XFLamp
   module TravisCI
@@ -27,7 +28,13 @@ module XFLamp
         @session = Travis::Client::Session.new
         @projects = config['projects'].map {|repo_slug| Project.new repo_slug, self }
       end
+
+      def self.name
+        'travis-ci-org'
+      end
     end
   end
 end
+
+XFLamp::BuildServers.register_build_server_type(XFLamp::TravisCI::Org)
 

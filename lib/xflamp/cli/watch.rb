@@ -12,10 +12,10 @@ module XFLamp
         lamp = Lamp.new options.pin
         loop do
           if servers.green?
-            puts 'All watched builds are well!'
+            puts 'All watched builds are well!' if options.verbose
             lamp.off!
           else
-            puts 'There is at least one build that is not passing...'
+            puts 'There is at least one build that is not passing...' if options.verbose
             lamp.on!
           end
           break if options.once?

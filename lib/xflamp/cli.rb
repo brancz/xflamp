@@ -43,6 +43,10 @@ module XFLamp
         opts.on('-o', '--once', 'Only request the build status once, not periodically') do
           options[:once?] = true
         end
+
+        opts.on('-v', '--verbose', 'Print messages aside from errors to stdout') do
+          options[:verbose] = true
+        end
       end.parse!(args)
       options
     end

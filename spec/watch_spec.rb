@@ -11,10 +11,21 @@ describe XFLamp::CLI::Watch do
     end
   end
 
-  xit '' do
+  it 'is a passing build' do
     TravisStub.heartbeat
     TravisStub.single_repo
     TravisStub.single_repo_by_id
+    gpio_stub = double('gpio')
+    allow(gpio_stub).to receive(:mode).with(0, OUTPUT)
+    allow(gpio_stub).to receive(:write).with(0, 0)
+    allow(WiringPi::GPIO).to receive(:new).and_return(gpio_stub)
+    XFLamp::CLI.new(['watch', '--once']).run
+  end
+
+  it 'is a passing build' do
+    TravisStub.heartbeat
+    TravisStub.single_repo
+    TravisStub.single_repo_by_id(:last_build_state => :failing)
     gpio_stub = double('gpio')
     allow(gpio_stub).to receive(:mode).with(0, OUTPUT)
     allow(gpio_stub).to receive(:write).with(0, 1)

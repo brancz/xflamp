@@ -4,6 +4,8 @@ require 'xflamp/cli/config'
 
 module XFLamp
   class CLI
+    class CommandNotFound < StandardError; end
+
     attr_accessor :command_to_execute, :options
 
     def initialize(args)
@@ -15,6 +17,12 @@ module XFLamp
       command_class = find_command command_to_execute
       command = command_class.new options
       command.run
+    rescue CommandNotFound
+      puts 'command not found'
+    rescue XFLamp::Config::ConfigMissing
+      puts 'The config you intend to use does not exists. By default XFLamp uses the file `xflamp.yml` in the current directory.'
+    rescue Interrupt
+      puts 'Exiting...'
     end
 
     private
@@ -28,10 +36,14 @@ module XFLamp
           options[:pin] = pin
         end
 
-        opts.on('-c', '--config [CONFIG]', Integer, 'Config file to use') do |config_path|
+        opts.on('-c', '--config [CONFIG]', String, 'Config file to use') do |config_path|
           options[:config_path] = config_path
         end
-      end.parse!
+
+        opts.on('-o', '--once', 'Only request the build status once, not periodically') do
+          options[:once?] = true
+        end
+      end.parse!(args)
       options
     end
 
@@ -42,14 +54,14 @@ module XFLamp
       }
       commands.fetch(command_name)
     rescue KeyError
-      puts 'command not found'
-      exit
+      raise CommandNotFound
     end
 
     def default_options
       {
         :pin => 0,
-        :config_path => 'xflamp.yml'
+        :config_path => 'xflamp.yml',
+        :once? => false
       }
     end
   end

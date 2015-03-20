@@ -5,10 +5,11 @@ require 'xflamp/build_servers'
 module XFLamp
   module TravisCI
     class Project
-      attr_reader :repo, :session
+      attr_reader :repo, :repo_slug, :session
 
       def initialize(repo_slug, server)
         @session = server.session
+        @repo_slug = repo_slug
         @repo = session.find_one(Travis::Client::Repository, repo_slug)
       end
 
@@ -27,6 +28,10 @@ module XFLamp
       def initialize(config)
         @session = Travis::Client::Session.new
         @projects = config['projects'].map {|repo_slug| Project.new repo_slug, self }
+      end
+
+      def to_h
+        { 'projects' => @projects.map(&:repo_slug) }
       end
 
       def self.name

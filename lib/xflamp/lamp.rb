@@ -4,9 +4,9 @@ module XFLamp
   class Lamp
     attr_reader :pin, :gpio
 
-    def initialize(pin)
+    def initialize(pin, gpio = WiringPi::GPIO.new)
       @pin = pin
-      @gpio = WiringPi::GPIO.new
+      @gpio = gpio
       gpio.mode pin, OUTPUT
     end
 

@@ -1,6 +1,6 @@
 require 'xflamp/cli/command'
 require 'inquirer'
-require 'travis'
+require 'travis/client'
 
 module XFLamp
   class CLI
@@ -12,11 +12,10 @@ module XFLamp
         repo_selection = Ask.checkbox 'Which repos do you want to watch?', repos.map(&:slug)
         repos_to_watch = repos.select.with_index { |_, i| repo_selection[i] }
         build_servers = {
-          'servers' => {
-            'travis-ci-org' => { 'projects' => repos_to_watch.map(&:slug) }
-          }
+          'travis-ci-org' => { 'projects' => repos_to_watch.map(&:slug) }
         }
-        File.open('xflamp.yml', 'w') {|f| f.write build_servers.to_yaml }
+        config.servers = BuildServers.new build_servers
+        config.save
         puts "Config saved in ./xflamp.yml"
       end
     end

@@ -7,7 +7,8 @@ module XFLamp
   class CLI
     class Watch < Command
       def run
-        servers = BuildServers.new config.servers
+        config.load
+        servers = config.servers
         lamp = Lamp.new options.pin
         loop do
           if servers.green?
@@ -17,12 +18,9 @@ module XFLamp
             puts 'There is at least one build that is not passing...'
             lamp.on!
           end
+          break if options.once?
           sleep 10
         end
-      rescue XFLamp::Config::ConfigMissing
-        puts 'The config you intend to use does not exists. By default XFLamp uses the file `xflamp.yml` in the current directory.'
-      rescue Interrupt
-        puts 'Exiting...'
       end
     end
   end

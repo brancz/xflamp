@@ -13,7 +13,7 @@ module XFLamp
       end
 
       def config
-        XFLamp::Config.new options.config_path
+        @config ||= XFLamp::Config.new options.config_path
       end
     end
   end

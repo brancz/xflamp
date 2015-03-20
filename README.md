@@ -9,10 +9,10 @@ welcome. :wink:
 
 ## Usage
 
-If you are happy with writing to `PIN 1` and have setup your config file in the
+If you are happy with writing to `PIN 0` and have setup your config file in the
 current direcory, then you can start the program with
 
-	$ xflamp
+	$ xflamp watch
 
 Example config file (by default called `xflamp.yml` in the current directory)
 
@@ -21,9 +21,19 @@ Example config file (by default called `xflamp.yml` in the current directory)
 servers:
   travis-ci-org:
     projects:
-      - flower-pot/xflamp
+    - flower-pot/xflamp
 
 ```
+
+You can generate such a configuration file with the `config` command. It will
+ask you for your travis ci authentication token (which will not be saved) to
+retrieve your active repos on travis ci. Then you can select the repos you want
+to watch interactively.
+
+> see [here](https://github.com/travis-ci/travis.rb#token) on how to get your
+> travis token
+
+	$ xflamp config
 
 If you want to use another `PIN` or want to specify the config file yourself,
 the CLI has some documentation on how to achieve that
@@ -31,8 +41,10 @@ the CLI has some documentation on how to achieve that
 ```bash
 $ xflamp --help
 Usage: xflamp [options]
-    -p, --pin [PIN]            Pin to write to when there is a non passing build
-    -c, --config [CONFIG]      Config file to use
+    -p, --pin [PIN]                  Pin to write to when there is a non passing build
+    -c, --config [CONFIG]            Config file to use
+    -o, --once                       Only request the build status once, not periodically
+    -v, --verbose                    Print messages aside from errors to stdout
 ```
 
 ## Contributing

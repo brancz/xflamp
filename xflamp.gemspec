@@ -10,7 +10,6 @@ Gem::Specification.new do |s|
   s.email       = 'fbranczyk@gmail.com'
 
   s.add_runtime_dependency 'bundler'
-  s.add_runtime_dependency 'travis'
   s.add_runtime_dependency 'wiringpi'
 
   s.add_development_dependency 'rake'

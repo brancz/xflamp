@@ -1,9 +1,5 @@
-require 'xflamp/aggregated_green'
-
 module XFLamp
   class BuildServers
-    include AggregatedGreen
-
     def initialize(build_server_config)
       @build_servers = {}
       build_server_config.each do |server, config|
@@ -22,7 +18,13 @@ module XFLamp
     def to_a
       @build_servers.values
     end
-    alias_method :targets, :to_a
+
+    def green?
+      @build_servers.values.each do |build_server|
+        return false unless build_server.green?
+      end
+      true
+    end
 
     def build_server_type(type)
       self.class.build_server_types.fetch type

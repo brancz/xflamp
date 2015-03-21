@@ -4,7 +4,6 @@ describe XFLamp::Config do
   include FakeFS::SpecHelpers::All
 
   before :each do
-    TravisStub.heartbeat
     TravisStub.single_repo
   end
 

@@ -1,33 +1,35 @@
-require 'travis/client/session'
-require 'xflamp/aggregated_green'
+require 'uri'
+require 'json'
+
 require 'xflamp/build_servers'
+require 'xflamp/http'
 
 module XFLamp
   module TravisCI
-    class Project
-      attr_reader :repo, :repo_slug, :session
+    Project = Struct.new(:repo_slug)
 
-      def initialize(repo_slug, server)
-        @session = server.session
-        @repo_slug = repo_slug
-        @repo = session.find_one(Travis::Client::Repository, repo_slug)
+    class Org
+      attr_reader :projects
+
+      def initialize(config)
+        @projects = config['projects'].map do |repo_slug|
+          Project.new repo_slug
+        end
       end
 
       def green?
-        session.reload(repo)
-        repo.last_build.green?
+        @projects.each do |project|
+          return false unless project_green?(project)
+        end
+        true
       end
-    end
 
-    class Org
-      include AggregatedGreen
-
-      attr_reader :projects, :session
-      alias_method :targets, :projects
-
-      def initialize(config)
-        @session = Travis::Client::Session.new
-        @projects = config['projects'].map {|repo_slug| Project.new repo_slug, self }
+      def project_green?(project)
+        uri = self.class.base_api_uri
+        uri.path = "/repos/#{project.repo_slug}"
+        res = self.class.http_client.get uri
+        last_build_status = JSON.parse(res.body)['repo']['last_build_state']
+        'passed' == last_build_status
       end
 
       def to_h
@@ -36,6 +38,16 @@ module XFLamp
 
       def self.name
         'travis-ci-org'
+      end
+
+      def self.http_client(access_token = nil)
+        default_headers = { 'Accept' => 'application/vnd.travis-ci.2+json' }
+        default_headers['Authorization'] = "token \"#{access_token}\"" if access_token
+        HTTP.new(default_headers)
+      end
+
+      def self.base_api_uri
+        URI("https://api.travis-ci.org/")
       end
     end
   end

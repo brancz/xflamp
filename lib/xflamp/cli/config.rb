@@ -1,15 +1,12 @@
 require 'xflamp/cli/command'
-require 'travis/client'
 
 module XFLamp
   class CLI
     class Config < Command
       def run
         travis_token = ask_for_travis_token
-        client = Travis::Client.new :access_token => travis_token
-        repos = client.user.repositories.select(&:active?)
-        repos_to_watch = ask_for_selecting_repos repos.map(&:slug)
-        puts repos_to_watch
+        repos = potential_repos(travis_token)
+        repos_to_watch = ask_for_selecting_repos repos
         build_servers = {
           'travis-ci-org' => { 'projects' => repos_to_watch }
         }
@@ -25,6 +22,23 @@ module XFLamp
       def ask_for_selecting_repos(repos)
         repos = repos.map{|r|"\"#{r}\" \"#{r}\" off"}.join ' '
         `whiptail --separate-output --checklist "Please select the repos you want to watch " 15 80 10 #{repos} 3>&1 1>&2 2>&3`.split
+      end
+
+      def potential_repos(access_token)
+        uri = TravisCI::Org.base_api_uri
+        http = TravisCI::Org.http_client(access_token)
+        uri.path = '/repos'
+        uri.query = "member=#{user(access_token)}"
+        res = http.get(uri)
+        JSON.parse(res.body)['repos'].map { |r| r['slug'] }
+      end
+
+      def user(access_token)
+        uri = TravisCI::Org.base_api_uri
+        http = TravisCI::Org.http_client(access_token)
+        uri.path = '/users'
+        res = http.get(uri)
+        JSON.parse(res.body)['user']['login']
       end
     end
   end

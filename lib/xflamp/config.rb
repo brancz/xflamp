@@ -2,8 +2,6 @@ require 'yaml'
 
 module XFLamp
   class Config
-    class ConfigMissing < StandardError; end
-
     attr_reader :config_path
     attr_accessor :servers
 

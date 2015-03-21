@@ -19,8 +19,6 @@ module XFLamp
       command.run
     rescue CommandNotFound
       puts 'command not found'
-    rescue XFLamp::Config::ConfigMissing
-      puts 'The config you intend to use does not exists. By default XFLamp uses the file `xflamp.yml` in the current directory.'
     rescue Interrupt
       puts 'Exiting...'
     end

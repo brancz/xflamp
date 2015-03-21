@@ -15,10 +15,6 @@ module XFLamp
       result
     end
 
-    def to_a
-      @build_servers.values
-    end
-
     def green?
       @build_servers.values.each do |build_server|
         return false unless build_server.green?

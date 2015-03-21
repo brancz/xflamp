@@ -8,6 +8,7 @@ Gem::Specification.new do |s|
   s.executables = ['xflamp']
   s.authors     = 'Frederic Branczyk'
   s.email       = 'fbranczyk@gmail.com'
+  s.files       = `git ls-files -z`.split("\x0")
 
   s.add_runtime_dependency 'bundler'
   s.add_runtime_dependency 'wiringpi'

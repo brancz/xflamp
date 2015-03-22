@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/flower-pot/xflamp.svg?branch=master)](https://travis-ci.org/flower-pot/xflamp)
+[![Coverage Status](https://coveralls.io/repos/flower-pot/xflamp/badge.svg?branch=master)](https://coveralls.io/r/flower-pot/xflamp?branch=master)
+[![Code Climate](https://codeclimate.com/github/flower-pot/xflamp/badges/gpa.svg)](https://codeclimate.com/github/flower-pot/xflamp)
+
 # xflamp
 
 Tiny ruby program which turns on a lamp through a raspberry pi's gpio and a

@@ -19,7 +19,7 @@ use very few dependencies)
 
 In general the cli is self documenting
 
-```bash
+```
 $ xflamp 
 Usage: xflamp COMMAND ...
 
@@ -27,6 +27,7 @@ Available commands:
 
   config                 configure the builds to watch
   help                   print help info
+  lamp                   manually turn the lamp "on" or "off"
   version                print version info
   watch                  watch the configured builds
 
@@ -43,7 +44,7 @@ current direcory, then you can start the program with
 If you want to use another `PIN` or want to specify the config file yourself,
 the CLI has some documentation on how to achieve that
 
-```bash
+```
 $ xflamp watch --help
 Watch the configured builds.
 
@@ -52,6 +53,21 @@ Usage: xflamp watch [OPTIONS]
     -c, --config-path [CONFIG]       config file to use
     -p, --pin [PIN]                  Pin to write io to
     -o, --once                       Only request the build status once
+```
+
+### Lamp
+
+To manually turn the lamp on and off use the `lamp` command. (This is mainly
+for hardware debugging and fun)
+
+```
+$ xflamp lamp --help
+Manually turn the lamp "on" or "off".
+
+Usage: xflamp lamp STATE [OPTIONS]
+    -h, --help                       display help
+    -c, --config-path [CONFIG]       config file to use
+    -p, --pin [PIN]                  Pin to write io to
 ```
 
 ### Config

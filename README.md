@@ -11,6 +11,10 @@ Currently only [travis-ci.org](https://travis-ci.org/) builds are supported out
 of the box, however, pull requests for any other build servers are very
 welcome. :wink:
 
+The CLI infrastructure is heavily inspired and blatantly copied from
+[travis.rb](https://github.com/travis-ci/travis.rb). (part of my goal was to
+use very few dependencies)
+
 ## Usage
 
 In general the cli is self documenting

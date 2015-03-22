@@ -1,4 +1,5 @@
 require 'xflamp/cli/command'
+require 'xflamp/version'
 
 module XFLamp
   module CLI
@@ -6,7 +7,7 @@ module XFLamp
       description 'print version info'
 
       def run
-        puts 'Printing le version'
+        puts "XFLamp #{XFLamp::VERSION}"
       end
     end
   end

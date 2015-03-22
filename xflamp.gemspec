@@ -1,6 +1,9 @@
+$LOAD_PATH.unshift File.expand_path('../lib', __FILE__)
+require 'xflamp/version'
+
 Gem::Specification.new do |s|
   s.name        = 'xflamp'
-  s.version     = '0.0.1'
+  s.version     = XFLamp::VERSION
   s.description = 'Daemon for checking build status on travis ci and turning on a real life light bulb if not passing.'
   s.homepage    = 'https://github.com/flower-pot/xflamp'
   s.summary     = 'Extreme Feedback Lamp'

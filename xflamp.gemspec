@@ -10,9 +10,9 @@ Gem::Specification.new do |s|
   s.email       = 'fbranczyk@gmail.com'
   s.files       = `git ls-files -z`.split("\x0")
 
-  s.add_runtime_dependency 'bundler'
   s.add_runtime_dependency 'wiringpi'
 
+  s.add_development_dependency 'bundler'
   s.add_development_dependency 'rake'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'fakefs'

@@ -1,4 +1,5 @@
 require 'xflamp/cli/command'
+require 'xflamp/lamp'
 
 module XFLamp
   module CLI

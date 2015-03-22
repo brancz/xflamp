@@ -9,10 +9,44 @@ welcome. :wink:
 
 ## Usage
 
+In general the cli is self documenting
+
+```bash
+$ xflamp 
+Usage: xflamp COMMAND ...
+
+Available commands:
+
+  config                 configure the builds to watch
+  help                   print help info
+  version                print version info
+  watch                  watch the configured builds
+
+run `xflamp help COMMAND` for more infos
+```
+
+### Watch
+
 If you are happy with writing to `PIN 0` and have setup your config file in the
 current direcory, then you can start the program with
 
 	$ xflamp watch
+
+If you want to use another `PIN` or want to specify the config file yourself,
+the CLI has some documentation on how to achieve that
+
+```bash
+$ xflamp watch --help
+Watch the configured builds.
+
+Usage: xflamp watch [OPTIONS]
+    -h, --help                       display help
+    -c, --config-path [CONFIG]       config file to use
+    -p, --pin [PIN]                  Pin to write io to
+    -o, --once                       Only request the build status once
+```
+
+### Config
 
 Example config file (by default called `xflamp.yml` in the current directory)
 
@@ -34,18 +68,6 @@ to watch interactively.
 > travis token
 
 	$ xflamp config
-
-If you want to use another `PIN` or want to specify the config file yourself,
-the CLI has some documentation on how to achieve that
-
-```bash
-$ xflamp --help
-Usage: xflamp [options]
-    -p, --pin [PIN]                  Pin to write to when there is a non passing build
-    -c, --config [CONFIG]            Config file to use
-    -o, --once                       Only request the build status once, not periodically
-    -v, --verbose                    Print messages aside from errors to stdout
-```
 
 ## Contributing
 

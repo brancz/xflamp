@@ -16,8 +16,8 @@ module XFLamp
 
       attr_reader :arguments, :config
 
-      def initialize
-        @arguments = []
+      def initialize(args = [])
+        @arguments = args
       end
 
       def execute

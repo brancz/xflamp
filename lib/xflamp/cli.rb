@@ -3,6 +3,7 @@ module XFLamp
     autoload :Command, 'xflamp/cli/command'
     autoload :Config,  'xflamp/cli/config'
     autoload :Help,    'xflamp/cli/help'
+    autoload :Lamp,    'xflamp/cli/lamp'
     autoload :Version, 'xflamp/cli/version'
     autoload :Watch,   'xflamp/cli/watch'
 

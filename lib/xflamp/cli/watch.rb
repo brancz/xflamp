@@ -14,7 +14,7 @@ module XFLamp
       def run
         config.load
         servers = config.servers
-        lamp = Lamp.new(pin || 0)
+        lamp = XFLamp::Lamp.new(pin || 0)
         loop do
           if servers.green?
             puts 'All watched builds are passing!'

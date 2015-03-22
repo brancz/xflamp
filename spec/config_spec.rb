@@ -1,4 +1,5 @@
 require 'fakefs/spec_helpers'
+require 'xflamp/config'
 
 describe XFLamp::Config do
   include FakeFS::SpecHelpers::All

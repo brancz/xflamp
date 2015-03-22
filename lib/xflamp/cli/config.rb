@@ -1,11 +1,17 @@
 require 'xflamp/cli/command'
+require 'xflamp/travis'
+require 'json'
 
 module XFLamp
-  class CLI
+  module CLI
     class Config < Command
+      description 'configure the builds to watch'
+
+      on('-t', '--token [TOKEN]', 'access token to retrieve projects from travis')
+
       def run
-        travis_token = ask_for_travis_token
-        repos = potential_repos(travis_token)
+        self.token ||= ask_for_travis_token
+        repos = potential_repos(self.token)
         repos_to_watch = ask_for_selecting_repos repos
         build_servers = {
           'travis-ci-org' => { 'projects' => repos_to_watch }
@@ -13,6 +19,8 @@ module XFLamp
         config.servers = BuildServers.new build_servers
         config.save
         puts "Config saved in ./xflamp.yml"
+      rescue => e
+        puts e.message
       end
 
       def ask_for_travis_token
@@ -38,6 +46,7 @@ module XFLamp
         http = TravisCI::Org.http_client(access_token)
         uri.path = '/users'
         res = http.get(uri)
+        fail StandardError, res.body unless res.is_a? Net::HTTPOK
         JSON.parse(res.body)['user']['login']
       end
     end

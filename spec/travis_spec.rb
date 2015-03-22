@@ -1,3 +1,5 @@
+require 'xflamp/travis'
+
 describe XFLamp::TravisCI::Org do
   subject { XFLamp::TravisCI::Org.new({ 'projects' => ['flower-pot/xflamp'] }) }
 

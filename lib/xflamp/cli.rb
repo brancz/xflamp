@@ -1,70 +1,63 @@
-require 'optparse'
-require 'xflamp/cli/watch'
-require 'xflamp/cli/config'
-
 module XFLamp
-  class CLI
-    class CommandNotFound < StandardError; end
+  module CLI
+    autoload :Command, 'xflamp/cli/command'
+    autoload :Config,  'xflamp/cli/config'
+    autoload :Help,    'xflamp/cli/help'
+    autoload :Version, 'xflamp/cli/version'
+    autoload :Watch,   'xflamp/cli/watch'
 
-    attr_accessor :command_to_execute, :options
+    extend self
 
-    def initialize(args)
-      @options = options_by(args)
-      @command_to_execute = args.shift
+    def run(*args)
+      args, opts = preparse(args)
+      name       = args.shift unless args.empty?
+      command    = command(name).new
+      command.parse(args)
+      command.execute
     end
 
-    def run
-      command_class = find_command command_to_execute
-      command = command_class.new options
-      command.run
-    rescue CommandNotFound
-      puts 'command not found'
-    rescue Interrupt
-      puts 'Exiting...'
+    def commands
+      CLI.constants.map { |n| try_const_get(n) }.select { |c| command? c }
+    end
+
+    def command(name)
+      const_name = command_name(name)
+      constant   = CLI.const_get(const_name) if const_name =~ /^[A-Z][A-Za-z]+$/ and const_defined? const_name
+      if command? constant
+        constant
+      else
+        $stderr.puts "unknown command #{name}"
+        exit 1
+      end
     end
 
     private
 
-    def options_by(args)
-      options = default_options
-      OptionParser.new do |opts|
-        opts.banner = 'Usage: xflamp [options]'
-
-        opts.on('-p', '--pin [PIN]', Integer, 'Pin to write to when there is a non passing build') do |pin|
-          options[:pin] = pin
-        end
-
-        opts.on('-c', '--config [CONFIG]', String, 'Config file to use') do |config_path|
-          options[:config_path] = config_path
-        end
-
-        opts.on('-o', '--once', 'Only request the build status once, not periodically') do
-          options[:once?] = true
-        end
-
-        opts.on('-v', '--verbose', 'Print messages aside from errors to stdout') do
-          options[:verbose] = true
-        end
-      end.parse!(args)
-      options
+    def try_const_get(name)
+      CLI.const_get(name)
+    rescue Exception
     end
 
-    def find_command(command_name)
-      commands = {
-        'watch'  => Watch,
-        'config' => Config
-      }
-      commands.fetch(command_name)
-    rescue KeyError
-      raise CommandNotFound
+    def command?(constant)
+      constant.is_a? Class and constant < Command and not constant.abstract?
     end
 
-    def default_options
-      {
-        :pin => 0,
-        :config_path => 'xflamp.yml',
-        :once? => false
-      }
+    def command_name(name)
+      case name
+      when nil, '-h', '-?' then 'Help'
+      when '-v'            then 'Version'
+      when /^--/           then command_name(name[2..-1])
+      else name.split('-').map(&:capitalize).join
+      end
+    end
+
+    def preparse(unparsed, args = [], opts = {})
+      case unparsed
+      when Hash  then opts.merge! unparsed
+      when Array then unparsed.each { |e| preparse(e, args, opts) }
+      else args << unparsed.to_s
+      end
+      [args, opts]
     end
   end
 end

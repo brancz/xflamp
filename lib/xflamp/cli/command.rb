@@ -88,10 +88,6 @@ module XFLamp
         name[/[^:]*$/].split(/(?=[A-Z])/).map(&:downcase).join('-')
       end
 
-      def self.skip(*names)
-        names.each { |n| define_method(n) {} }
-      end
-
       def self.description(description = nil)
         @description = description if description
         @description ||= ""

@@ -21,13 +21,9 @@ module Helpers
     end
   end
 
-  def stdout
-    last_run.out if last_run
-  end
-
   private
 
-    def capture_result(success)
-      @last_run = OpenStruct.new(:stdout => $stdout.string, :success? => success)
-    end
+  def capture_result(success)
+    @last_run = OpenStruct.new(:stdout => $stdout.string, :success? => success)
+  end
 end

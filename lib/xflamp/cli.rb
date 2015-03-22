@@ -26,7 +26,7 @@ module XFLamp
       if command? constant
         constant
       else
-        $stderr.puts "unknown command #{name}"
+        puts "unknown command #{name}"
         exit 1
       end
     end

@@ -35,5 +35,10 @@ describe XFLamp::CLI::Watch do
     run_cli('watch', '--once')
     expect(last_run.stdout).to eq "There is at least one build that is not passing...\n"
   end
+
+  it 'knows its options' do
+    run_cli('watch', '--help')
+    expect(last_run.success?).to be true
+  end
 end
 
